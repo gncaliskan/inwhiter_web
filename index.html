@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Inwhiter | Davetiyeniz</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg static-top">
+      <div class="container">
+        <a class="navbar-brand" href="http://www.inwhiter.com"> <img src="images/logo_small.png"/> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+          <!--
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      -->
+      </div>
+    </nav>
+
+
+    <!-- Header with Background Image -->
+    <header class="business-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 invited-name">
+            <div id="name"></div>
+          </div>
+          <div class="col-lg-12">
+            <img id="davetiyeImage" class="img-fluid"/>
+          </div>
+
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row justify-content-center">
+
+           <div class="card col-md-4">
+              <div class="card-top"> Katılım Durumunuz</div>
+             <div class="card-body">
+
+                 <div class="form-check">
+                   <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="yanit" id="yanit1" value="option1" checked>
+                    Geliyorum
+                   </label>
+                 </div>
+                 <div class="form-check">
+                   <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="yanit" id="yanit2" value="option2">
+                    Belki
+                   </label>
+                 </div>
+                 <div class="form-check">
+                   <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="yanit" id="yanit3" value="option3">
+                    Gelmiyorum
+                   </label>
+                 </div>
+
+              <hr/>
+              <div>
+                <label class="form-control-label">Gelecek Kişi Sayısı</label>
+              </div>
+              <select class="custom-select col">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+             </div>
+             <div class="card-footer">
+               <a href="#" class="btn btn-primary" id="send">Gönder</a>
+             </div>
+           </div>
+
+         </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; <a href="http://www.inwhiter.com">inwhiter.com</a> 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
+
+
+
+<script>
+window.onload = function() {
+  var i = window.location.search.substring(4);
+
+  var config = {
+     apiKey: "AIzaSyDaTv2z9kwZLCggk4o_0jxhFmJOc80jiEA",
+     authDomain: "inwhiter-c3dfa.firebaseapp.com",
+     databaseURL: "https://inwhiter-c3dfa.firebaseio.com",
+     projectId: "inwhiter-c3dfa",
+     storageBucket: "inwhiter-c3dfa.appspot.com",
+     messagingSenderId: "444661735156"
+   };
+   firebase.initializeApp(config);
+
+  var database = firebase.database();
+  var img;
+
+  database.ref('/invitee/'+i).once('value').then(function(snapshot) {
+
+    var name = (snapshot.val().name) || '';
+    img = snapshot.val().inviteId;
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+    alert('invites/'+img+'.jpg');
+    var tangRef = storageRef.child('invites/'+img+'.jpg');
+
+    firebase.auth().signInAnonymously().then(function() {
+
+      tangRef.getDownloadURL().then(function(url){
+
+            document.getElementById("davetiyeImage").src=url;
+
+      }).catch(function(error) {
+        console.error(error);
+      });
+    });
+
+    document.getElementById("name").innerHTML=name;
+
+  });
+
+}
+$( "#send" ).click(function() {
+  alert("dsfds");
+    database().ref('invitee/' + i +'/status').set({
+    answered: true,
+    numberOfPeople: $("#numberOfPeople option:selected").attr("id"),
+    answer : $('input[name=yanit]:checked').val()
+  });
+});
+</script>
+
+  </body>
+
+</html>
